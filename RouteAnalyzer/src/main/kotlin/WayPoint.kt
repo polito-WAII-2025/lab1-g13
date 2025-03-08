@@ -6,9 +6,6 @@ import kotlin.math.*
 
 @Serializable
 data class WayPoint(val time: Double, val latitude:Double, val longitude:Double){
-    fun distanceTo(other: WayPoint): Double{
-        return  sqrt((latitude - other.latitude).pow(2) + (longitude - other.longitude).pow(2))
-    }
 
     fun haversine(other: WayPoint, earthRadiusKm: Double): Double{
         val dLat = Math.toRadians(other.latitude - latitude)
