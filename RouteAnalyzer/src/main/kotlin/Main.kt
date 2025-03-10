@@ -30,6 +30,17 @@ fun calculate_max_distance(data: List<WayPoint>, earthRadiusKm: Double): Map<Str
     return result
 }
 
+fun getWaypointsOutsideGeofence(data: List<WayPoint>, center_point: WayPoint, config: Config): Map<String, Any>{
+    val outside_points = data.filter { point -> point.haversine(center_point, config.earthRadiusKm) > config.geofenceRadiusKm }
+    val count = outside_points.size
+    val result = mapOf(
+        "centralWaypoint" to center_point,
+        "areaRadiusKm" to config.geofenceRadiusKm,
+        "count" to count,
+        "waypoints" to outside_points
+    )
+    return result
+}
 
 fun main() {
     val config = ymlTools.ReadYml("custom-parameters.yml")
@@ -38,5 +49,10 @@ fun main() {
     val max_result = calculate_max_distance(data,config.earthRadiusKm)
     val jsonString = Gson().toJson(max_result)
     println(jsonString)
+
+    val center_point = WayPoint(0.0, config.geofenceCenterLatitude, config.geofenceCenterLongitude)
+    val outside_result = getWaypointsOutsideGeofence(data, center_point, config)
+    val outside_result_json = Gson().toJson(outside_result)
+    println(outside_result_json)
 
 }
