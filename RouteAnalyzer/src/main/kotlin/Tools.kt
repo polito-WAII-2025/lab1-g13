@@ -34,3 +34,14 @@ object ymlTools{
         return config
     }
 }
+
+object fileTools{
+    fun WriteJson(file_name: String, jsonData:String) {
+        val baseDir = System.getProperty("user.dir") // 获取项目根目录
+        val file = File("$baseDir/Resource/$file_name")
+        file.bufferedWriter().use { writer ->
+            writer.write(jsonData)
+        }
+
+    }
+}

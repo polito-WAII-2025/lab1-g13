@@ -30,6 +30,25 @@ fun calculate_max_distance(data: List<WayPoint>, earthRadiusKm: Double): Map<Str
     return result
 }
 
+fun getMostFrequentedArea(data: List<WayPoint>, config: Config):Map<String, Any>{
+    var count = 0
+    var center_index = 0
+    for((index, point) in data.withIndex()){
+        val num = data.filter { item -> item.haversine(point, config.earthRadiusKm) < config.geofenceRadiusKm }.size
+        if(num > count){
+            count = num
+            center_index = index
+        }
+    }
+    val center_point = data[center_index]
+    val result = mapOf(
+        "centralWaypoint" to center_point,
+        "areaRadiusKm" to config.geofenceRadiusKm,
+        "entriesCount" to count,
+    )
+    return result
+}
+
 fun getWaypointsOutsideGeofence(data: List<WayPoint>, center_point: WayPoint, config: Config): Map<String, Any>{
     val outside_points = data.filter { point -> point.haversine(center_point, config.earthRadiusKm) > config.geofenceRadiusKm }
     val count = outside_points.size
@@ -47,12 +66,19 @@ fun main() {
     val rows = csvTools.ReadCsv("waypoints.csv")
     val data = get_json_data(rows)
     val max_result = calculate_max_distance(data,config.earthRadiusKm)
-    val jsonString = Gson().toJson(max_result)
-    println(jsonString)
+
+    val frequence_area = getMostFrequentedArea(data,config)
 
     val center_point = WayPoint(0.0, config.geofenceCenterLatitude, config.geofenceCenterLongitude)
     val outside_result = getWaypointsOutsideGeofence(data, center_point, config)
-    val outside_result_json = Gson().toJson(outside_result)
-    println(outside_result_json)
 
+    val output = mapOf(
+        "maxDistanceFromStart" to max_result,
+        "mostFrequentedArea" to frequence_area,
+        "waypointsOutsideGeofence" to outside_result
+    )
+    val output_json = Gson().toJson(output)
+    println(output_json)
+
+    fileTools.WriteJson("output.json", output_json)
 }
