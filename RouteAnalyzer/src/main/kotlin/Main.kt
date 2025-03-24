@@ -6,6 +6,8 @@ import java.io.File
 import java.io.FileWriter
 import java.io.Writer
 import javax.naming.Context
+import com.google.gson.Gson
+
 
 fun maxDistanceFromStart(str:String):String{
     val data = "x"
@@ -13,7 +15,6 @@ fun maxDistanceFromStart(str:String):String{
 }
 fun mostFrequentedArea(){}
 fun waypointsOutsideGeofence(){}
-import com.google.gson.Gson
 
 fun get_json_data(data:List<Array<String>>): List<WayPoint>{
     val result = data.map{item ->
@@ -23,55 +24,7 @@ fun get_json_data(data:List<Array<String>>): List<WayPoint>{
     return result
 }
 
-fun main() {
-//    println("Hello World!")
-    val rows = CsvTools.ReadCsv("waypoints.csv")
 
-    rows.forEach { row ->
-        println(row.joinToString(", "))
-    }
-    val json = buildJsonObject {
-        putJsonObject("maxDistanceFromStart") {
-            putJsonObject("waypoint"){
-                    put("timestamp","number")
-                    put("latitude","number")
-                    put("longitude","number")
-            }
-            put("distanceKm","xx")
-        }
-        putJsonObject("mostFrequentedArea") {
-            putJsonObject("centralWaypoint"){
-                put("timestamp","number")
-                put("latitude","number")
-                put("longitude","number")
-            }
-            put("areaRadiusKm","xx")
-            put("entriesCount","xx")
-        }
-        putJsonObject("waypointsOutsideGeofence") {
-            putJsonObject("centralWaypoint"){
-                put("timestamp","number")
-                put("latitude","number")
-                put("longitude","number")
-            }
-            put("areaRadiusKm","xx")
-            put("count","xx")
-            putJsonArray("waypoints"){
-                for(i in 0 .. 5)add(buildJsonObject {
-                    putJsonObject("centralWaypoint"){
-                        put("timestamp",i)
-                        put("latitude",i)
-                        put("longitude",i)
-                    }})
-            }
-
-        }
-    }
-    val filename = "outputs.json";
-
-    val writer = FileWriter(filename);
-    writer.write(json.toString());
-    writer.close()
 fun calculate_max_distance(data: List<WayPoint>, earthRadiusKm: Double): Map<String, Any>{
     val start_point = data[0]
     var num = 0
@@ -145,6 +98,58 @@ fun ExcuteAllData(){
     fileTools.WriteJson("output.json", output_json)
 }
 
+fun executeAll(){
+    val rows = csvTools.ReadCsv("waypoints.csv")
+
+    rows.forEach { row ->
+        println(row.joinToString(", "))
+    }
+    val json = buildJsonObject {
+        putJsonObject("maxDistanceFromStart") {
+            putJsonObject("waypoint") {
+                put("timestamp", "number")
+                put("latitude", "number")
+                put("longitude", "number")
+            }
+            put("distanceKm", "xx")
+        }
+        putJsonObject("mostFrequentedArea") {
+            putJsonObject("centralWaypoint") {
+                put("timestamp", "number")
+                put("latitude", "number")
+                put("longitude", "number")
+            }
+            put("areaRadiusKm", "xx")
+            put("entriesCount", "xx")
+        }
+        putJsonObject("waypointsOutsideGeofence") {
+            putJsonObject("centralWaypoint") {
+                put("timestamp", "number")
+                put("latitude", "number")
+                put("longitude", "number")
+            }
+            put("areaRadiusKm", "xx")
+            put("count", "xx")
+            putJsonArray("waypoints") {
+                for (i in 0..5) add(buildJsonObject {
+                    putJsonObject("centralWaypoint") {
+                        put("timestamp", i)
+                        put("latitude", i)
+                        put("longitude", i)
+                    }
+                })
+            }
+
+        }
+    }
+    val filename = "outputs.json";
+
+    val writer = FileWriter(filename);
+    writer.write(json.toString());
+    writer.close()
+}
+
 fun main() {
+//    println("Hello World!")
     ExcuteAllData()
 }
