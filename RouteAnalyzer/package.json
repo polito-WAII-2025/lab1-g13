@@ -1,0 +1,19 @@
+{
+  "name": "routeanalyzer",
+  "version": "1.0.0",
+  "description": "add package.json",
+  "main": "Main.kt",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polito-WAII-2025/lab1-g13.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/polito-WAII-2025/lab1-g13/issues"
+  },
+  "homepage": "https://github.com/polito-WAII-2025/lab1-g13#readme"
+}
