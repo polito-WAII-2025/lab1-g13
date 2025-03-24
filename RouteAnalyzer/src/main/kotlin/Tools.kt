@@ -39,7 +39,10 @@ object ymlTools{
 
 object fileTools{
     fun WriteJson(file_name: String, jsonData:String) {
-        val file = File("$file_name") // 写入外部文件系统，而不是 JAR 内部
+//        val baseDir = System.getProperty("user.dir") // 获取项目根目录
+//        val file = File("$baseDir/RouteAnalyzer/src/main/resources/$file_name") // 写入外部文件系统，而不是 JAR 内部
+        println("what the fuck file path: $file_name")
+        val file = File("$file_name")
         file.parentFile?.mkdirs() // 确保目录存在
 
         file.bufferedWriter().use { writer ->
