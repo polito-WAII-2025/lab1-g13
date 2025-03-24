@@ -61,7 +61,7 @@ fun getWaypointsOutsideGeofence(data: List<WayPoint>, center_point: WayPoint, co
     return result
 }
 
-fun main() {
+fun ExcuteAllData(){
     val config = ymlTools.ReadYml("custom-parameters.yml")
     val rows = csvTools.ReadCsv("waypoints.csv")
     val data = get_json_data(rows)
@@ -81,4 +81,8 @@ fun main() {
     println(output_json)
 
     fileTools.WriteJson("output.json", output_json)
+}
+
+fun main() {
+    ExcuteAllData()
 }
