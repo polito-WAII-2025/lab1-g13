@@ -6,3 +6,5 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+/libraries/Gradle__org_jetbrains_kotlinx_kotlinx_serialization_core_jvm_1_5_0.xml
+/libraries/Gradle__org_jetbrains_kotlinx_kotlinx_serialization_json_jvm_1_5_0.xml
